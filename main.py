@@ -7,7 +7,7 @@ app = FastAPI()
 def run_article(keyword: str = Query(..., description="輸入關鍵字")):
     try:
         title, html = generate_full_article(keyword)
-        url = upload_to_hastebin(html)
+        url = upload_to_pastegg(html)
         return {
             "keyword": keyword,
             "title": title,

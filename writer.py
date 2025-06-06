@@ -9,14 +9,25 @@ API_KEY = os.getenv("GEMINI_API_KEY")
 MODEL = "gemini-1.5-flash"
 genai_client = genai.Client(api_key=API_KEY)
 
-def upload_to_hastebin(content: str) -> str:
-    try:
-        res = requests.post("https://hastebin.com/documents", data=content.encode("utf-8"))
-        res.raise_for_status()
-        key = res.json()["key"]
-        return f"https://hastebin.com/{key}"
-    except Exception as e:
-        return f"Upload failed: {str(e)}"
+def upload_to_pastegg(content: str, title="SEO文章") -> str:
+    payload = {
+        "name": title,
+        "files": [
+            {
+                "name": "article.html",
+                "content": {
+                    "format": "text",
+                    "value": content
+                }
+            }
+        ]
+    }
+    res = requests.post("https://api.paste.gg/v1/pastes", json=payload)
+    if res.status_code == 201:
+        url = res.json()["result"]["url"]
+        return url
+    else:
+        return f"PasteGG Upload Failed: {res.status_code} - {res.text}"
 
 def generate_content(prompt: str) -> str:
     res = genai_client.models.generate_content(model=MODEL, contents=prompt)
