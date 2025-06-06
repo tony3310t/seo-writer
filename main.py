@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Query
-from writer import generate_full_article, upload_to_hastebin
+from writer import generate_full_article, upload_to_pastegg
 
 app = FastAPI()
 
