@@ -24,8 +24,7 @@ def upload_to_pastegg(content: str, title="SEO文章") -> str:
     }
     res = requests.post("https://api.paste.gg/v1/pastes", json=payload)
     if res.status_code == 201:
-        url = res.json()["result"]["url"]
-        return url
+        return res.json()["result"]["url"]
     else:
         return f"PasteGG Upload Failed: {res.status_code} - {res.text}"
 
